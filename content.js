@@ -147,15 +147,42 @@ function displayBggRating(bggData) {
         bggRatingElement.style.padding = '10px';
         bggRatingElement.style.border = '1px solid #ccc';
         bggRatingElement.style.borderRadius = '5px';
-        bggRatingElement.innerHTML = `
-            <h3 style="margin-top: 0;">BoardGameGeek Adatok</h3>
-            <p><strong>Értékelés:</strong> ${bggData.rating}</p>
-            <p><strong>Komplexitás:</strong> ${bggData.weight}</p>
-            <p><strong>Közösség által ajánlott életkor:</strong> ${bggData.suggestedAge}+</p>
-            <p><strong>Nyelvfüggőség:</strong> ${bggData.languageDependence}</p>
-            <p><a href="https://boardgamegeek.com/boardgame/${bggData.id}" target="_blank" rel="noopener noreferrer">BGG adatlap</a></p>
-        `;
-        
+
+        const title = document.createElement('h3');
+        title.style.marginTop = '0';
+        title.textContent = 'BoardGameGeek Adatok';
+
+        const ratingP = document.createElement('p');
+        ratingP.appendChild(document.createElement('strong')).textContent = 'Értékelés:';
+        ratingP.appendChild(document.createTextNode(' ' + bggData.rating));
+
+        const weightP = document.createElement('p');
+        weightP.appendChild(document.createElement('strong')).textContent = 'Komplexitás:';
+        weightP.appendChild(document.createTextNode(' ' + bggData.weight));
+
+        const ageP = document.createElement('p');
+        ageP.appendChild(document.createElement('strong')).textContent = 'Közösség által ajánlott életkor:';
+        ageP.appendChild(document.createTextNode(' ' + bggData.suggestedAge + '+'));
+
+        const langP = document.createElement('p');
+        langP.appendChild(document.createElement('strong')).textContent = 'Nyelvfüggőség:';
+        langP.appendChild(document.createTextNode(' ' + bggData.languageDependence));
+
+        const linkP = document.createElement('p');
+        const link = document.createElement('a');
+        link.href = `https://boardgamegeek.com/boardgame/${bggData.id}`;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        link.textContent = 'BGG adatlap';
+        linkP.appendChild(link);
+
+        bggRatingElement.appendChild(title);
+        bggRatingElement.appendChild(ratingP);
+        bggRatingElement.appendChild(weightP);
+        bggRatingElement.appendChild(ageP);
+        bggRatingElement.appendChild(langP);
+        bggRatingElement.appendChild(linkP);
+
         // Insert the new element right after the target element
         targetElement.insertAdjacentElement('afterend', bggRatingElement);
     }
