@@ -153,18 +153,38 @@ function displayBggRating(bggData) {
         title.textContent = 'BoardGameGeek Adatok';
 
         const ratingP = document.createElement('p');
+        const ratingIcon = document.createElement('i');
+        ratingIcon.className = 'fa fa-star';
+        ratingIcon.style.marginRight = '5px';
+        ratingIcon.style.color = '#2cd5b6';
+        ratingP.appendChild(ratingIcon);
         ratingP.appendChild(document.createElement('strong')).textContent = 'Értékelés:';
         ratingP.appendChild(document.createTextNode(' ' + bggData.rating));
 
         const weightP = document.createElement('p');
+        const weightIcon = document.createElement('i');
+        weightIcon.className = 'fa fa-gears';
+        weightIcon.style.marginRight = '5px';
+        weightIcon.style.color = '#e74c3c';
+        weightP.appendChild(weightIcon);
         weightP.appendChild(document.createElement('strong')).textContent = 'Komplexitás:';
-        weightP.appendChild(document.createTextNode(' ' + bggData.weight));
+        weightP.appendChild(document.createTextNode(' ' + bggData.weight + '/5'));
 
         const ageP = document.createElement('p');
+        const ageIcon = document.createElement('i');
+        ageIcon.className = 'fa fa-birthday-cake';
+        ageIcon.style.marginRight = '5px';
+        ageIcon.style.color = '#f1c40f';
+        ageP.appendChild(ageIcon);
         ageP.appendChild(document.createElement('strong')).textContent = 'Közösség által ajánlott életkor:';
         ageP.appendChild(document.createTextNode(' ' + bggData.suggestedAge + '+'));
 
         const langP = document.createElement('p');
+        const langIcon = document.createElement('i');
+        langIcon.className = 'fa fa-language';
+        langIcon.style.marginRight = '5px';
+        langIcon.style.color = '#3498db';
+        langP.appendChild(langIcon);
         langP.appendChild(document.createElement('strong')).textContent = 'Nyelvfüggőség:';
         langP.appendChild(document.createTextNode(' ' + bggData.languageDependence));
 
