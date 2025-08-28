@@ -23,8 +23,8 @@ Ez az egyszerű, mégis rendkívül hasznos böngésző kiegészítő közvetlen
 A használata rendkívül egyszerű:
 
 1. Telepítsd a kiegészítőt a megfelelő böngészőhöz.
-2. Firefox: https://addons.mozilla.org/en-US/firefox/addon/bgg-on-tarsasjatekok-com/
-3. Chrome: Érkezik
+2. [Firefox](https://addons.mozilla.org/en-US/firefox/addon/bgg-on-tarsasjatekok-com/)
+3. [Chrome](https://chromewebstore.google.com/detail/bgg-rating-display/hbblomigfolhgobfapgndjnflodmckkd)
 4. Látogass el a https://tarsasjatekok.com oldalra, és keress rá egy társasjátékra.
 5. A kiegészítő automatikusan megkeresi és megjeleníti a releváns BGG adatokat az oldalon.
 
