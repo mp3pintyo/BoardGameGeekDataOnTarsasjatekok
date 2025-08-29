@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "BGG Rating Display",
-  "version": "1.1",
+  "version": "1.4",
   "description": "Displays BGG rating on tarsasjatekok.com",
   "icons": {
     "48": "icons/bgg-logo.png"
@@ -14,5 +14,12 @@
   ],
   "host_permissions": [
     "https://boardgamegeek.com/xmlapi2/*"
+  ],
+  "options_page": "options.html",
+  "background": {
+    "service_worker": "background.js"
+  },
+  "permissions": [
+    "storage"
   ]
 }

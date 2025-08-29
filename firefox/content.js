@@ -133,79 +133,206 @@ function displayBggRating(bggData) {
         return;
     }
 
-    const targetElement = document.querySelector('boardgame-properties-extended');
-    if (targetElement) {
-        // Remove existing container if it's there from a previous run to avoid duplicates
-        const existingContainer = document.getElementById('bgg-rating-container');
-        if (existingContainer) {
-            existingContainer.remove();
-        }
-
-        const bggRatingElement = document.createElement('div');
-        bggRatingElement.id = 'bgg-rating-container';
-        bggRatingElement.style.marginTop = '20px';
-        bggRatingElement.style.padding = '10px';
-        bggRatingElement.style.border = '1px solid #ccc';
-        bggRatingElement.style.borderRadius = '5px';
-
-        const title = document.createElement('h3');
-        title.style.marginTop = '0';
-        title.textContent = 'BoardGameGeek Adatok';
-
-        const ratingP = document.createElement('p');
-        const ratingIcon = document.createElement('i');
-        ratingIcon.className = 'fa fa-star';
-        ratingIcon.style.marginRight = '5px';
-        ratingIcon.style.color = '#2cd5b6';
-        ratingP.appendChild(ratingIcon);
-        ratingP.appendChild(document.createElement('strong')).textContent = 'Értékelés:';
-        ratingP.appendChild(document.createTextNode(' ' + bggData.rating));
-
-        const weightP = document.createElement('p');
-        const weightIcon = document.createElement('i');
-        weightIcon.className = 'fa fa-gears';
-        weightIcon.style.marginRight = '5px';
-        weightIcon.style.color = '#e74c3c';
-        weightP.appendChild(weightIcon);
-        weightP.appendChild(document.createElement('strong')).textContent = 'Komplexitás:';
-        weightP.appendChild(document.createTextNode(' ' + bggData.weight + '/5'));
-
-        const ageP = document.createElement('p');
-        const ageIcon = document.createElement('i');
-        ageIcon.className = 'fa fa-birthday-cake';
-        ageIcon.style.marginRight = '5px';
-        ageIcon.style.color = '#f1c40f';
-        ageP.appendChild(ageIcon);
-        ageP.appendChild(document.createElement('strong')).textContent = 'Közösség által ajánlott életkor:';
-        ageP.appendChild(document.createTextNode(' ' + bggData.suggestedAge + '+'));
-
-        const langP = document.createElement('p');
-        const langIcon = document.createElement('i');
-        langIcon.className = 'fa fa-language';
-        langIcon.style.marginRight = '5px';
-        langIcon.style.color = '#3498db';
-        langP.appendChild(langIcon);
-        langP.appendChild(document.createElement('strong')).textContent = 'Nyelvfüggőség:';
-        langP.appendChild(document.createTextNode(' ' + bggData.languageDependence));
-
-        const linkP = document.createElement('p');
-        const link = document.createElement('a');
-        link.href = `https://boardgamegeek.com/boardgame/${bggData.id}`;
-        link.target = '_blank';
-        link.rel = 'noopener noreferrer';
-        link.textContent = 'BGG adatlap';
-        linkP.appendChild(link);
-
-        bggRatingElement.appendChild(title);
-        bggRatingElement.appendChild(ratingP);
-        bggRatingElement.appendChild(weightP);
-        bggRatingElement.appendChild(ageP);
-        bggRatingElement.appendChild(langP);
-        bggRatingElement.appendChild(linkP);
-
-        // Insert the new element right after the target element
-        targetElement.insertAdjacentElement('afterend', bggRatingElement);
+    // Check if browser API is available
+    if (typeof browser === 'undefined') {
+        console.error('Browser API not available, using default settings');
+        // Use default settings if browser API is not available
+        displayBggRatingWithSettings(bggData, {
+            showRating: true,
+            showWeight: true,
+            showAge: true,
+            showLanguage: true,
+            hideComplexity: false,
+            hidePublisherAge: false
+        });
+        return;
     }
+
+    // Try to get settings, fallback to defaults if it fails
+    try {
+        browser.storage.sync.get({
+            showRating: true,
+            showWeight: true,
+            showAge: true,
+            showLanguage: true,
+            hideComplexity: false,
+            hidePublisherAge: false
+        }).then((settings) => {
+            console.log('BGG Extension settings:', settings);
+            displayBggRatingWithSettings(bggData, settings);
+        }).catch((error) => {
+            console.error('Error getting settings, using defaults:', error);
+            displayBggRatingWithSettings(bggData, {
+                showRating: true,
+                showWeight: true,
+                showAge: true,
+                showLanguage: true,
+                hideComplexity: false,
+                hidePublisherAge: false
+            });
+        });
+    } catch (error) {
+        console.error('Storage API error, using defaults:', error);
+        displayBggRatingWithSettings(bggData, {
+            showRating: true,
+            showWeight: true,
+            showAge: true,
+            showLanguage: true,
+            hideComplexity: false,
+            hidePublisherAge: false
+        });
+    }
+}
+
+// Separate function to display rating with settings
+function displayBggRatingWithSettings(bggData, settings) {
+        const targetElement = document.querySelector('boardgame-properties-extended');
+        if (targetElement) {
+            // Remove existing container if it's there from a previous run to avoid duplicates
+            const existingContainer = document.getElementById('bgg-rating-container');
+            if (existingContainer) {
+                existingContainer.remove();
+            }
+
+            // Design finomhangolás: Tarsasjatekok.com Komplexitás elrejtése (MutationObserver-rel)
+            if (settings.hideComplexity) {
+                function hideComplexityProp() {
+                    const elems = document.querySelectorAll('.boardgame_prop .prop');
+                    if (elems.length >= 5) {
+                        elems[4].style.display = 'none';
+                        return true;
+                    }
+                    return false;
+                }
+
+                if (!hideComplexityProp()) {
+                    const observer = new MutationObserver(() => {
+                        if (hideComplexityProp()) {
+                            observer.disconnect();
+                        }
+                    });
+                    observer.observe(document.body, { childList: true, subtree: true });
+                }
+            }
+
+            // Design finomhangolás: Tarsasjatekok.com Kiadó ajánlott életkor elrejtése (MutationObserver-rel)
+            if (settings.hidePublisherAge) {
+                function hidePublisherAgeProp() {
+                    const elems = document.querySelectorAll('.boardgame_prop .prop');
+                    if (elems.length >= 4) {
+                        elems[3].style.display = 'none';
+                        return true;
+                    }
+                    return false;
+                }
+
+                if (!hidePublisherAgeProp()) {
+                    const observer = new MutationObserver(() => {
+                        if (hidePublisherAgeProp()) {
+                            observer.disconnect();
+                        }
+                    });
+                    observer.observe(document.body, { childList: true, subtree: true });
+                }
+            }
+
+            const bggRatingElement = document.createElement('div');
+            bggRatingElement.id = 'bgg-rating-container';
+            bggRatingElement.style.marginTop = '20px';
+            bggRatingElement.style.padding = '10px';
+            bggRatingElement.style.border = '1px solid #ccc';
+            bggRatingElement.style.borderRadius = '5px';
+
+            const titleRow = document.createElement('div');
+            titleRow.style.display = 'flex';
+            titleRow.style.alignItems = 'center';
+
+            const title = document.createElement('h3');
+            title.style.marginTop = '0';
+            title.style.marginBottom = '0';
+            title.style.flex = 'none';
+            title.textContent = 'BoardGameGeek Adatok';
+
+            // Settings icon
+            const settingsIcon = document.createElement('i');
+            settingsIcon.className = 'fa fa-cog';
+            settingsIcon.style.fontSize = '22px';
+            settingsIcon.style.marginLeft = '10px';
+            settingsIcon.style.cursor = 'pointer';
+            settingsIcon.title = 'Beállítások';
+            settingsIcon.onclick = () => {
+                browser.runtime.sendMessage({ action: 'openOptions' });
+            };
+
+            titleRow.appendChild(title);
+            titleRow.appendChild(settingsIcon);
+            bggRatingElement.appendChild(titleRow);
+
+            if (settings.showRating) {
+                const ratingP = document.createElement('p');
+                const ratingIcon = document.createElement('i');
+                ratingIcon.className = 'fa fa-star';
+                ratingIcon.style.marginRight = '5px';
+                ratingIcon.style.color = '#2cd5b6';
+                ratingP.appendChild(ratingIcon);
+                const ratingStrong = document.createElement('strong');
+                ratingStrong.textContent = 'Értékelés:';
+                ratingP.appendChild(ratingStrong);
+                ratingP.appendChild(document.createTextNode(' ' + bggData.rating));
+                bggRatingElement.appendChild(ratingP);
+            }
+            if (settings.showWeight) {
+                const weightP = document.createElement('p');
+                const weightIcon = document.createElement('i');
+                weightIcon.className = 'fa fa-gears';
+                weightIcon.style.marginRight = '5px';
+                weightIcon.style.color = '#e74c3c';
+                weightP.appendChild(weightIcon);
+                const weightStrong = document.createElement('strong');
+                weightStrong.textContent = 'Komplexitás:';
+                weightP.appendChild(weightStrong);
+                weightP.appendChild(document.createTextNode(' ' + bggData.weight + '/5'));
+                bggRatingElement.appendChild(weightP);
+            }
+            if (settings.showAge) {
+                const ageP = document.createElement('p');
+                const ageIcon = document.createElement('i');
+                ageIcon.className = 'fa fa-birthday-cake';
+                ageIcon.style.marginRight = '5px';
+                ageIcon.style.color = '#f1c40f';
+                ageP.appendChild(ageIcon);
+                const ageStrong = document.createElement('strong');
+                ageStrong.textContent = 'Közösség által ajánlott életkor:';
+                ageP.appendChild(ageStrong);
+                ageP.appendChild(document.createTextNode(' ' + bggData.suggestedAge + '+'));
+                bggRatingElement.appendChild(ageP);
+            }
+            if (settings.showLanguage) {
+                const langP = document.createElement('p');
+                const langIcon = document.createElement('i');
+                langIcon.className = 'fa fa-language';
+                langIcon.style.marginRight = '5px';
+                langIcon.style.color = '#3498db';
+                langP.appendChild(langIcon);
+                const langStrong = document.createElement('strong');
+                langStrong.textContent = 'Nyelvfüggőség:';
+                langP.appendChild(langStrong);
+                langP.appendChild(document.createTextNode(' ' + bggData.languageDependence));
+                bggRatingElement.appendChild(langP);
+            }
+
+            const linkP = document.createElement('p');
+            const link = document.createElement('a');
+            link.href = `https://boardgamegeek.com/boardgame/${bggData.id}`;
+            link.target = '_blank';
+            link.rel = 'noopener noreferrer';
+            link.textContent = 'BGG adatlap';
+            linkP.appendChild(link);
+            bggRatingElement.appendChild(linkP);
+
+            // Insert the new element right after the target element
+            targetElement.insertAdjacentElement('afterend', bggRatingElement);
+        }
 }
 
 

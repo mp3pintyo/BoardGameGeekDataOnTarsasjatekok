@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <title>BGG Rating Display - Beállítások</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; }
+    label { display: flex; align-items: center; margin-bottom: 1em; }
+    input[type=checkbox] { margin-right: 0.5em; }
+  </style>
+</head>
+<body>
+  <h2>Megjelenítendő BGG adatok</h2>
+  <form id="settingsForm">
+    <label><input type="checkbox" id="showRating"> BGG Értékelés</label>
+    <label><input type="checkbox" id="showWeight"> Játék Nehézsége (Komplexitás)</label>
+    <label><input type="checkbox" id="showAge"> Ajánlott életkor (közösségi)</label>
+    <label><input type="checkbox" id="showLanguage"> Nyelvfüggőség</label>
+    <hr>
+    <h3>Design finomhangolás</h3>
+    <label><input type="checkbox" id="hideComplexity"> Tarsasjatekok.com Komplexitás</label>
+    <label><input type="checkbox" id="hidePublisherAge"> Tarsasjatekok.com Kiadó ajánlott életkor</label>
+    <button type="submit">Mentés</button>
+  </form>
+  <div id="status" style="margin-top:1em;color:green;"></div>
+  <script src="options.js"></script>
+</body>
+</html>
