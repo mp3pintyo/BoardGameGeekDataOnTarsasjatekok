@@ -1,28 +1,125 @@
 <!DOCTYPE html>
 <html lang="hu">
 <head>
-  <meta charset="UTF-8">
-  <title>BGG Rating Display - Beállítások</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 2em; }
-    label { display: flex; align-items: center; margin-bottom: 1em; }
-    input[type=checkbox] { margin-right: 0.5em; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BGG Rating Display - Beállítások</title>
+    <link rel="icon" type="image/png" href="icons/bgg-logo.png" sizes="48x48">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="options.css" rel="stylesheet">
 </head>
-<body>
-  <h2>Megjelenítendő BGG adatok</h2>
-  <form id="settingsForm">
-    <label><input type="checkbox" id="showRating"> BGG Értékelés</label>
-    <label><input type="checkbox" id="showWeight"> Játék Nehézsége (Komplexitás)</label>
-    <label><input type="checkbox" id="showAge"> Ajánlott életkor (közösségi)</label>
-    <label><input type="checkbox" id="showLanguage"> Nyelvfüggőség</label>
-    <hr>
-    <h3>Design finomhangolás</h3>
-    <label><input type="checkbox" id="hideComplexity"> Tarsasjatekok.com Komplexitás</label>
-    <label><input type="checkbox" id="hidePublisherAge"> Tarsasjatekok.com Kiadó ajánlott életkor</label>
-    <button type="submit">Mentés</button>
-  </form>
-  <div id="status" style="margin-top:1em;color:green;"></div>
-  <script src="options.js"></script>
+<body class="system-theme">
+    <div class="optionsPage">
+        <div class="sideBar">
+            <div class="titleContainer">
+                <img src="icons/bgg-logo.png" alt="BGG Logo" class="logo">
+                <div class="logoTitle">BGG Rating Display</div>
+            </div>
+            <ul>
+                <li class="sideBarItem selected">
+                    <a href="#general">Beállítások</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="contentsArea">
+            <h1 class="contentTitle">Beállítások</h1>
+            <hr>
+
+            <section id="general">
+                <ul class="categoryContainer">
+                    <li class="categoryTitle">Megjelenítendő adatok</li>
+                    <li class="categoryElements">
+                        <ul class="optionContainer">
+                            <li class="optionElement">
+                                <div class="optionText">
+                                    <p><i class="fas fa-star"></i> BGG Értékelés</p>
+                                    <div class="caption">Megjeleníti a BoardGameGeek átlagos értékelését</div>
+                                </div>
+                                <div class="optionForm">
+                                    <input type="checkbox" id="showRating">
+                                    <label for="showRating" class="checkbox"></label>
+                                </div>
+                            </li>
+                            <li class="optionElement">
+                                <div class="optionText">
+                                    <p><i class="fas fa-gears"></i> BGG Komplexitás</p>
+                                    <div class="caption">Megjeleníti a játék komplexitását 1-5 skálán</div>
+                                </div>
+                                <div class="optionForm">
+                                    <input type="checkbox" id="showWeight">
+                                    <label for="showWeight" class="checkbox"></label>
+                                </div>
+                            </li>
+                            <li class="optionElement">
+                                <div class="optionText">
+                                    <p><i class="fas fa-birthday-cake"></i> Közösség által ajánlott életkor</p>
+                                    <div class="caption">Megjeleníti a BGG közösség által ajánlott minimális életkort</div>
+                                </div>
+                                <div class="optionForm">
+                                    <input type="checkbox" id="showAge">
+                                    <label for="showAge" class="checkbox"></label>
+                                </div>
+                            </li>
+                            <li class="optionElement">
+                                <div class="optionText">
+                                    <p><i class="fas fa-language"></i> Nyelvfüggőség</p>
+                                    <div class="caption">Megjeleníti mennyire függ a játék a nyelvtudástól</div>
+                                </div>
+                                <div class="optionForm">
+                                    <input type="checkbox" id="showLanguage">
+                                    <label for="showLanguage" class="checkbox"></label>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <ul class="categoryContainer">
+                    <li class="categoryTitle">Design finomhangolás</li>
+                    <li class="categoryElements">
+                        <ul class="optionContainer">
+                            <li class="optionElement">
+                                <div class="optionText">
+                                    <p><i class="fas fa-eye-slash"></i> Komplexitás elrejtése</p>
+                                    <div class="caption">Elrejti a tarsasjatekok.com oldalon a komplexitás információt</div>
+                                </div>
+                                <div class="optionForm">
+                                    <input type="checkbox" id="hideComplexity">
+                                    <label for="hideComplexity" class="checkbox"></label>
+                                </div>
+                            </li>
+                            <li class="optionElement">
+                                <div class="optionText">
+                                    <p><i class="fas fa-eye-slash"></i> Kiadó ajánlott életkor elrejtése</p>
+                                    <div class="caption">Elrejti a tarsasjatekok.com oldalon a kiadó ajánlott életkor információt</div>
+                                </div>
+                                <div class="optionForm">
+                                    <input type="checkbox" id="hidePublisherAge">
+                                    <label for="hidePublisherAge" class="checkbox"></label>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <ul class="categoryContainer">
+                    <li class="categoryElements">
+                        <ul class="optionContainer">
+                            <li class="optionElement buttonsContainer">
+                                <button type="button" id="saveButton" class="button">
+                                    <i class="fas fa-save"></i> Beállítások mentése
+                                </button>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <div id="status"></div>
+            </section>
+        </div>
+    </div>
+
+    <script src="options.js"></script>
 </body>
 </html>

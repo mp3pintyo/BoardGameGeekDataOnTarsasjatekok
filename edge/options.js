@@ -1,4 +1,4 @@
-// BGG Rating Display - Options
+// BGG Rating Display - Options (Edge)
 
 document.addEventListener('DOMContentLoaded', () => {
   const showRating = document.getElementById('showRating');
@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const showLanguage = document.getElementById('showLanguage');
   const hideComplexity = document.getElementById('hideComplexity');
   const hidePublisherAge = document.getElementById('hidePublisherAge');
+  const saveButton = document.getElementById('saveButton');
   const status = document.getElementById('status');
 
   // Load settings
@@ -26,9 +27,8 @@ document.addEventListener('DOMContentLoaded', () => {
     hidePublisherAge.checked = items.hidePublisherAge;
   });
 
-  // Save settings
-  document.getElementById('settingsForm').addEventListener('submit', (e) => {
-    e.preventDefault();
+  // Save settings function
+  function saveSettings() {
     chrome.storage.sync.set({
       showRating: showRating.checked,
       showWeight: showWeight.checked,
@@ -37,8 +37,27 @@ document.addEventListener('DOMContentLoaded', () => {
       hideComplexity: hideComplexity.checked,
       hidePublisherAge: hidePublisherAge.checked
     }, () => {
-      status.textContent = 'Beállítások elmentve!';
-      setTimeout(() => status.textContent = '', 2000);
+      // Show success message
+      status.textContent = '✓ Beállítások sikeresen elmentve!';
+      status.className = 'status-message show success';
+      
+      // Hide message after 3 seconds
+      setTimeout(() => {
+        status.className = 'status-message';
+        status.textContent = '';
+      }, 3000);
+    });
+  }
+
+  // Save button click handler
+  saveButton.addEventListener('click', saveSettings);
+
+  // Auto-save on checkbox change (optional)
+  [showRating, showWeight, showAge, showLanguage, hideComplexity, hidePublisherAge].forEach(checkbox => {
+    checkbox.addEventListener('change', () => {
+      // Add a small delay to avoid too frequent saves
+      clearTimeout(window.autoSaveTimeout);
+      window.autoSaveTimeout = setTimeout(saveSettings, 500);
     });
   });
 });
