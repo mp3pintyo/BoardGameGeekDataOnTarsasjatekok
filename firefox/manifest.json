@@ -3,7 +3,7 @@
   "name": "BGG Rating Display",
   "version": "1.4",
   "description": "Displays BGG rating on tarsasjatekok.com",
-  "applications": {
+  "browser_specific_settings": {
     "gecko": {
       "id": "{36826c63-7fa0-4fbe-be74-75fb67ccdd40}"
     }
