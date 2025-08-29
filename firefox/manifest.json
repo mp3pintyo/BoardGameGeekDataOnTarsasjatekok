@@ -5,7 +5,7 @@
   "description": "Displays BGG rating on tarsasjatekok.com",
   "applications": {
     "gecko": {
-      "id": "bgg-rating-display@mp3pintyo.github.io"
+      "id": "{36826c63-7fa0-4fbe-be74-75fb67ccdd40}"
     }
   },
   "icons": {
