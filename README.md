@@ -10,6 +10,7 @@ Ez az egyszerű, mégis rendkívül hasznos böngésző kiegészítő közvetlen
 
 - **Firefox** (Manifest V2)
 - **Chrome** (Manifest V3)
+- **Edge**
 
 ## Milyen adatokat jelenít meg a kiegészítő?
 
