@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "BGG Rating Display",
-  "version": "1.1",
+  "version": "1.4",
   "description": "Displays BGG rating on tarsasjatekok.com",
   "icons": {
     "16": "icons/bgg-logo.png",
